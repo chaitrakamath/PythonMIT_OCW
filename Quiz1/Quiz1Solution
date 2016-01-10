@@ -1,0 +1,167 @@
+#============================================Problem1================================
+1) Are each of the following True or False:
+
+1.1. Any program that can be written using only function definitions and calls, the
+basic arithmetic operators, assignment, and conditionals will run in constant time.
+True
+
+1.2. Newton’s method will always converge on a correct root of a function. True
+
+1.3. In Python, dictionaries are immutable. 
+False. Example: if you assign dict1 to dict2, both dict1 and dict2 are pointing to the same location. Now, if you change / add to the value of dict2 and print dict1, it would be the same as dict2. 
+
+1.4. The value of ‘math.sqrt(2.0)*math.sqrt(2.0) == 2.0’ is True. 
+False, since in Python, floating point number is expressed with finite precision. Hence, comparing same floating values may not necessarily result in True
+
+1.5. One should always avoid iteration when a recursive solution is possible. 
+False, since using recursion does not reduce complexity over using iteration. Moreover, recursive solution is not always as intuitive as iterative solution
+
+1.6. Typically, the use of functions in a program reduces the total number of lines
+of code. True, if we are reusing that function at different places in the program
+
+1.7. In Python, retrieving the value associated with a dictionary key takes roughly
+constant time. True, since dictionary are indexed by keys values rather than index values
+
+#============================================Problem2================================
+2) Consider the implementations of compare1 and compare 2, where a and b are floats.
+
+def compare1(a, b):
+	if a < 0:
+		a = -a
+	if b < 0:
+		b = -b
+	res = (a == b)
+	if res:
+		print a, 'and', b, 'have the same absolute value.'
+	else:
+		print a, 'and', b, 'have different absolute values.'
+	return res 
+
+
+def absolute_value(n):
+	if n < 0:
+		n = -n
+	return n
+
+def compare2(a, b):
+	res = absolute_value(a) == absolute_value(b)
+	if res:
+		print a, 'and', b, 'have the same absolute value.'
+	else:
+		print a, 'and', b, 'have different absolute values.'
+	return res 
+
+2.1) Do compare1 and compare2 return the same value for all possible inputs? If not,
+give a pair of inputs for which they return a different value.
+Yes, compare1 and compare2 will return the same value for all possible combination of input
+
+2.2) Do compare1 and compare2 print the same thing for all possible inputs? If not,
+give a pair of inputs for which they print different things. 
+No, compare1 and compare2 will not print same thing for all possible inputs. 
+Example: consider a = -1 and b = 1.
+Analysis of compare1 function:
+a) Since a < 0, it will enter the first if condition and a will become: a = 1
+b) System will skip next if statement since b > 0
+c) System will compare a and b and since they are same, res will be True. So, at this point, we have: a = 1 (from step.a), b = 1 and res = True
+d) Since res is True, we get the output printed as: '1 and 1 have same absolute value'
+
+Analysis of compare2 function:
+a) In function call of absolute_value(a), since a < 0, it will enter the if condition and we get the result of 1. In function call of absolute_value(b), since b > 0, it will not enter the if condition and we get the result of 1. We will compare the results of these two function calls to each other: 1 == 1 and assign the result to res. So, res = True. However, we HAVE NOT CHANGED VALUES OF a and b like we did in compare1. Hence, at the end of this step, we have the following: 
+a = -1, b = 1 and res = True
+b) Since res is True, we get the output printed as: '- 1 and 1 have same absolute value'
+
+#============================================Problem3================================
+3) Consider the following implementation of a function f, where x is a positive integer:
+def f(x):
+	xs = str(x)
+	if len(xs) == 1:
+		return int(xs)
+	n = int(xs[0]) + int(xs[1])
+	if len(xs) == 2:
+		return n
+	else:
+		return n + f(xs[2:])
+
+
+What does f(2112) return?
+The result of f(2112) is 6
+
+3.2. Write a specification of f. 
+Given an integer, the function returns sum of its digits
+
+#============================================Problem4================================
+4) Provide a Python implementation of a function first_N that takes a positive integer,
+n, as its only argument. The function should print the first n perfect squares that are not
+even numbers. E.g., if n were 2 it should print the perfect squares 1 and 9.
+
+def first_N(n):
+"""
+prints first n perfect squares that are not even numbers
+n should be an integer value
+"""
+assert type(n) == int, 'Please provide an integer value to continue'
+for i in range(1:(2n+1)): 
+	ans = i * i
+	if ans % 2 != 0:
+		print ans
+
+
+#============================================Problem5================================
+5. Write pseudo code for an exhaustive enumeration variant of guess and check. 
+a) Create a set of all possible result values
+b) For every value in the possible result values set, check if the current value of result satisfies the condition
+c) If yes, stop
+d) If not, go back to step b) with next value in result set
+e) Continue till either appropriate value is found or result set is exhausted, whichever is earlier
+
+#============================================Problem6================================
+6.) Provide a Python implementation for the function findSide specified below
+
+def findSide():
+ """asks the user to enter the area of a rectangle and the length of one side of the
+rectangle. Returns a floating point number that is the length of the adjacent side.""" 
+	area = float(raw_input('Please enter area of rectangle:'))
+	side1 = float(raw_input('Please enter area of rectangle:'))
+	side2 = area / side1
+	return side2
+
+
+#============================================Problem7================================
+7) Does the following function meet its specification? If not, change the program so that
+it is consistent with the specification.
+def f(L):
+ """Returns a copy of the list L without modifying L."""
+	result = []
+	for e in L: result.append(e)
+ 	return result 
+
+ No, it does not. Following would be correct implementation
+ def f(L):
+ """Returns a copy of the list L without modifying L."""
+	result = L.copy()
+ 	return result 
+#============================================Problem8================================
+8) At McDonalds one can buy chicken nuggets in packages containing 6, 9 or 20 pieces. Write a
+Python function that accepts an integer, num, as an argument and decides whether or not it is
+possible to buy num nuggets at McDonalds. 
+
+def possibleNuggets(num):
+	"""Checks whether or not it is possible to buy num nuggets at McDonalds
+	num must be a integer"""
+	assert type(num) == int, 'Please enter an integer value'
+	for numSixPacks in range(num/6 + 1):
+		for numNinePacks in range(num/9 + 1):
+			for numTwentyPacks in range(num/20 + 1):
+				if num in (6 * numSixPacks + 9 * numNinePacks + 20 * numTwentyPacks):
+					return True
+				else: return False
+
+
+#============================================Problem9================================
+9) Write an appropriate specification for the function below. Assume that n is an integer.
+def f(n):
+	s = str(n)
+	if len(s) <= 1: return s
+	return s[-1] + f(int(s[:-1])) 
+
+Given an integer, the function returns string representation of n with its digits reversed

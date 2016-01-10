@@ -1,0 +1,109 @@
+This problem set is designed to help you solidify your understanding of some
+material that we have covered in lecture, but not emphasized on the programming problems. You should do it, but do NOT hand it in.
+
+1) What is the computational complexity of fact0? Explain your answer.
+def fact0(i):
+	 assert type(i) == int and i >= 0
+	 if i == 0 or i == 1:
+	 	return 1
+	 return i * fact0(i-1) 
+
+The function terminates when i == 0 or i == 1. So, the complexity depends on value of i or value of the formal argument passed to the function. Hence, this is function has linear complexity or O(n) complexity, where n is the value of formal argument. 
+
+2) What is the computational complexity of fact1? Explain your answer.
+def fact1(i):
+	 assert type(i) == int and i >= 0
+	 res = 1
+	 while i > 1:
+		 res = res * i
+		 i -= 1
+	 return res
+
+Again, this function terminates when i <= 1. So, the complexity depends on value of i or value of the formal argument passed to the function. Hence, this is function has linear complexity or O(n) complexity, where n is the value of formal argument. 
+
+3) What is the computational complexity of makeSet? Explain your answer.
+def makeSet(s):
+	 assert type(s) == str
+	 res = ''
+	 for c in s:
+		 if not c in res:
+		 	res = res + c
+	 return res
+
+This function terminates either if s is not a string or when all the elemnts of the s are exhausted if s is a string.  So, the complexity depends on length of s or length of the formal argument passed to the function. Hence, this is function has linear complexity or O(n) complexity, where n is the length of formal argument. 
+
+
+4) What is the computational complexity of intersect? Explain your answer.
+def intersect(s1, s2):
+	 assert type(s1) == str and type(s2) == str
+	 s1 = makeSet(s1)
+	 s2 = makeSet(s2)
+	 res = ''
+	 for e in s1:
+	 	if e in s2:
+	 		res = res + e
+	 return res 
+
+This function intersect() makes call to makeSet() function by passing both, set1 and set2. We know that the complexity of makeSet() is O(n), where n is length of the set passed to makeSet(). Hence, that makes complexity of intersect() as O(n1 + n2), where n1 is length of s1 and n2 is length of s2. Furthermore, intersect() function loops through all elements of s1. Hence, the complexity of intersect() will become O(2n1 + n2). Thus, the comuputational complexity of intersect() is linear. 
+
+
+5) Present a hand simulation of the code below. Describe the value to which each identifier is bound after each step of the computation. Note that “s1” and “s2” exist in more than one scope.
+
+def swap0(s1, s2):
+	 assert type(s1) == list and type(s2) == list
+	 tmp = s1[:]
+	 s1 = s2[:]
+	 s2 = tmp
+	 return
+
+s1 = [1]
+s2 = [2]
+swap0(s1, s2)
+print s1, s2 
+
+a) s1 points to memory location that has a list with value 1 and s2 points to memory location that is a list with value 2
+b) When we call swap0(s1, s2), the variable tmp is created that points to a memory location that contains COPY of s1. It does not point to the same memory location where we have s1 stored. 
+c) Similarly, s1 points to memory location that contains COPY of s2. It does not point to the same memory location where we have s2 stored. The value at the memory location that s1 was orginally pointing to is now replaced by a COPY of s2. Hence, at the end of this step, we have s1 = [2]
+d) s2, which was originally pointing to memory location having list with value 2 would not be pointing to memory location that tmp points at. This memory location contains copy of s1 having list with value of 1. Hence, s2 is now a new list with value 1. So, s2 = [1]
+e) However, we have changed s1 and s2 within the function. And s1 and s2 within the function swap0() are alive only within swap0(). Once the function completes, s1 and s2 variables from within the swap0() do not exist anymore. 
+f) So, when we print s1 and s2 after running swap0(), we would get values [1], [2]. If we would have returned values of s1 and s2 from within the function and would have assigned that to s1, s2 outside, s1 and s2 would have got swapped
+
+The function swap0() computes a fixed set of steps and terminates. There are no loops, conditionals or recursive calls. Hence, computations complexity of this function is constant. 
+
+
+6) Present a hand simulation of the following code:
+def swap1(s1, s2):
+	 assert type(s1) == list and type(s2) == list
+	 return s2, s1
+s1 = [1]
+s2 = [2]
+s1, s2 = swap1(s1, s2)
+print s1, s2 
+
+a) When swap1() is called on s1 and s2, it simply returns s2, s1. 
+b) The statement: 
+s1, s2 = swap1(s1, s2)
+assigns s2 returned by swap1() to s1 and s1 returned by swap1() to s2
+c) When we print s1, s2, we get the output: [2], [1]
+
+
+7) Present a hand simulation of the following code:
+def rev(s):
+	 assert type(s) == list
+	 for i in range(len(s)/2):
+	 	tmp = s[i]
+	 	s[i] = s[-(i+1)]
+	 	s[-(i+1)] = tmp
+s = [1,2,3]
+rev(s)
+print s 
+
+a) We assign s to list: [1, 2, 3]
+b) We then call rev(s) function. len(s) = 3 and hence, len(s) / 2 = 1. i will be assigned value of only 0.  
+	a) local variable tmp is assigned to s[0]. tmp = 1
+	b) formal variable s is changed as: s[0] = s[-1]. Thus, s[0] = 3
+	c) formal variable s is changed as: s[-1] = tmp. Thus, s[-1] = 1
+	d) formal variable within function rev() is now: s = [3, 2, 1]
+c) Once rev(s) execution is completed, s is reversed in place as we did not create a copy of the list
+d) When we print s, the output is: [3, 2, 1]
+
